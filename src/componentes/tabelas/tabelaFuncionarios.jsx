@@ -1,4 +1,4 @@
-// /* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 
@@ -28,8 +28,8 @@ export default function TabelaFuncionarios(props) {
   };
   
   const editarFuncionario = (funcionario) => {
-    props.setFuncionarioAEditar(funcionario); // Passar o funcionário para o estado funcionarioAEditar no componente FormCadFuncionarios
-    setExibirTabela(false); // Mudar para o modo de edição
+    props.setFuncionarioAEditar(funcionario); 
+    setExibirTabela(false); 
   };
 
   return (

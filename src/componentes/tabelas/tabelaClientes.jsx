@@ -3,7 +3,6 @@ export default function TabelaClientes(props) {
     return (
         <div>
             <Button onClick={() => {
-                //precisar alterar o estado 'exibirTabela' da tela de cadastro de cliente para false
                 props.setExibirTabela(false);
             }}>
                 Cadastrar Novo Cliente
