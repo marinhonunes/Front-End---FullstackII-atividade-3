@@ -71,10 +71,13 @@ export default function FormCadFuncionarios(props) {
       ...funcionario,
       departamento: {
         codigo: funcionario.departamento.codigo,
-        nome: funcionario.departamento.nome
-      }
+        nome: funcionario.departamento.nome,
+      },
+      dataContratacao: funcionario.dataContratacao
+        ? funcionario.dataContratacao.split("T")[0]
+        : "",
     };
-  
+
     fetch(url, {
       method: "POST",
       headers: {
@@ -85,9 +88,7 @@ export default function FormCadFuncionarios(props) {
       .then((resposta) => resposta.json())
       .then((retorno) => {
         if (retorno.status) {
-          alert(
-            retorno.mensagem + " - código gerado: " + retorno.codigoGerado
-          );
+          alert(retorno.mensagem + " - código gerado: " + retorno.codigoGerado);
           props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
           props.setExibirTabela(true);
         } else {
@@ -97,15 +98,18 @@ export default function FormCadFuncionarios(props) {
       .catch((erro) => {
         alert("Erro ao registrar o funcionário: " + erro.message);
       });
-  }  
-  
+  }
+
   function atualizarFuncionarioNoBackend() {
     const url = "http://localhost:3001/funcionario";
     const funcionarioParaEnviar = {
       ...funcionario,
-      departamento: funcionario.departamento.codigo
+      departamento: funcionario.departamento.codigo,
+      dataContratacao: funcionario.dataContratacao
+        ? funcionario.dataContratacao.split("T")[0]
+        : "",
     };
-  
+
     fetch(url, {
       method: "PUT",
       headers: {
@@ -116,9 +120,7 @@ export default function FormCadFuncionarios(props) {
       .then((resposta) => resposta.json())
       .then((retorno) => {
         if (retorno.status) {
-          alert(
-            retorno.mensagem + " - código gerado: " + retorno.codigoGerado
-          );
+          alert(retorno.mensagem);
           props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
           props.setExibirTabela(true);
         } else {
@@ -129,7 +131,7 @@ export default function FormCadFuncionarios(props) {
         alert("Erro ao atualizar o funcionário: " + erro.message);
       });
   }
-  
+
   function manipularSubmissao(evento) {
     evento.preventDefault();
     evento.stopPropagation();
@@ -145,9 +147,6 @@ export default function FormCadFuncionarios(props) {
       }
     }
   }
-  
-  
-
   return (
     <Form noValidate validated={validado} onSubmit={manipularSubmissao}>
       <Row className="mb-3">
@@ -224,11 +223,18 @@ export default function FormCadFuncionarios(props) {
             type="date"
             placeholder=""
             required
-            value={funcionario.dataContratacao}
+            value={
+              funcionario.dataContratacao
+                ? new Date(funcionario.dataContratacao)
+                    .toISOString()
+                    .split("T")[0]
+                : ""
+            }
             id="dataContratacao"
             name="dataContratacao"
             onChange={manipularMudanca}
           />
+
           <Form.Control.Feedback type="invalid">
             Por favor, informe a data de Contratação do funcionário.
           </Form.Control.Feedback>
@@ -255,7 +261,7 @@ export default function FormCadFuncionarios(props) {
               );
             })}
           </Form.Select>
-          
+
           <Form.Control.Feedback type="invalid">
             Por favor, informe a categoria do produto.
           </Form.Control.Feedback>
