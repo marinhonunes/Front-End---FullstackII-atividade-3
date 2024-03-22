@@ -3,7 +3,7 @@ import TabelaFuncionarios from "../tabelas/tabelaFuncionarios";
 import Pagina from "../templates/pagina";
 import { useState, useEffect } from "react";
 
-export default function TelaCadastroProduto(props) {
+export default function TelaCadastroFuncionario(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
     const [listaFuncionarios, setListaFuncionarios] = useState([]);
 

@@ -181,9 +181,11 @@ export default function FormCadFuncionarios(props) {
       <Row className="mb-3">
         <Form.Group as={Col} md="12">
           <Form.Label>Departamento:</Form.Label>
+
           <Form.Select
             id="departamento"
             nome="departamento"
+            value={funcionario.departamento.codigo}
             onChange={selecionarDepartamento}
           >
             <option key={0} value={0}>
@@ -197,6 +199,7 @@ export default function FormCadFuncionarios(props) {
               );
             })}
           </Form.Select>
+          
           <Form.Control.Feedback type="invalid">
             Por favor, informe a categoria do produto.
           </Form.Control.Feedback>

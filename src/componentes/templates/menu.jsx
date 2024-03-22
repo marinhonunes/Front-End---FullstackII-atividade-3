@@ -16,11 +16,11 @@ export default function Menu(props) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavDropdown title="Cadastros" id="basic-nav-dropdown">
-                            <NavDropdown.Item > <Link to='/clientes'>Clientes</Link></NavDropdown.Item>
+                            {/* <NavDropdown.Item > <Link to='/clientes'>Clientes</Link></NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item> <Link to="#action/3.3">Fornecedores</Link></NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item> <Link to='/produtos'>Produtos</Link></NavDropdown.Item>
+                            <NavDropdown.Divider /> */}
+                            <NavDropdown.Item> <Link to='/funcionarios'>Funcionarios</Link></NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Link href="#" onClick={() => {
                             setUsuario({ ...usuario, logado: false})
