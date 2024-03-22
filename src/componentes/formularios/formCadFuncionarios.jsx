@@ -22,6 +22,12 @@ export default function FormCadFuncionarios(props) {
     departamento: {},
   });
 
+  useEffect(() => {
+    if (props.funcionarioAEditar) {
+      setFuncionario(props.funcionarioAEditar);
+    }
+  }, [props.funcionarioAEditar]);
+
   function selecionarDepartamento(evento) {
     const codigoDepartamento = evento.currentTarget.value;
     setFuncionario({
@@ -59,6 +65,71 @@ export default function FormCadFuncionarios(props) {
     setFuncionario({ ...funcionario, [componente.name]: componente.value });
   }
 
+  function enviarNovoFuncionarioParaBackend() {
+    const url = "http://localhost:3001/funcionario";
+    const funcionarioParaEnviar = {
+      ...funcionario,
+      departamento: {
+        codigo: funcionario.departamento.codigo,
+        nome: funcionario.departamento.nome
+      }
+    };
+  
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(funcionarioParaEnviar),
+    })
+      .then((resposta) => resposta.json())
+      .then((retorno) => {
+        if (retorno.status) {
+          alert(
+            retorno.mensagem + " - código gerado: " + retorno.codigoGerado
+          );
+          props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
+          props.setExibirTabela(true);
+        } else {
+          alert(retorno.mensagem);
+        }
+      })
+      .catch((erro) => {
+        alert("Erro ao registrar o funcionário: " + erro.message);
+      });
+  }  
+  
+  function atualizarFuncionarioNoBackend() {
+    const url = "http://localhost:3001/funcionario";
+    const funcionarioParaEnviar = {
+      ...funcionario,
+      departamento: funcionario.departamento.codigo
+    };
+  
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(funcionarioParaEnviar),
+    })
+      .then((resposta) => resposta.json())
+      .then((retorno) => {
+        if (retorno.status) {
+          alert(
+            retorno.mensagem + " - código gerado: " + retorno.codigoGerado
+          );
+          props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
+          props.setExibirTabela(true);
+        } else {
+          alert(retorno.mensagem);
+        }
+      })
+      .catch((erro) => {
+        alert("Erro ao atualizar o funcionário: " + erro.message);
+      });
+  }
+  
   function manipularSubmissao(evento) {
     evento.preventDefault();
     evento.stopPropagation();
@@ -67,31 +138,16 @@ export default function FormCadFuncionarios(props) {
       setValidado(true);
     } else {
       setValidado(false);
-      //enviar o funcionario para o backend
-      fetch("http://localhost:3001/funcionario", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(funcionario),
-      })
-        .then((resposta) => resposta.json())
-        .then((retorno) => {
-          if (retorno.status) {
-            alert(
-              retorno.mensagem + " - código gerado: " + retorno.codigoGerado
-            );
-            props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
-            props.setExibirTabela(true);
-          } else {
-            alert(retorno.mensagem);
-          }
-        })
-        .catch((erro) => {
-          alert("Erro: " + erro.message);
-        });
+      if (props.funcionarioAEditar) {
+        atualizarFuncionarioNoBackend();
+      } else {
+        enviarNovoFuncionarioParaBackend();
+      }
     }
   }
+  
+  
+
   return (
     <Form noValidate validated={validado} onSubmit={manipularSubmissao}>
       <Row className="mb-3">

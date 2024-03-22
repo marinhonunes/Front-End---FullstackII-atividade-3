@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 export default function TelaCadastroFuncionario(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
     const [listaFuncionarios, setListaFuncionarios] = useState([]);
+    const [funcionarioAEditar, setFuncionarioAEditar] = useState(null);
 
     const buscarFuncionarios = () => {
         fetch('http://localhost:3001/funcionario', { method: 'GET' })
@@ -22,7 +23,12 @@ export default function TelaCadastroFuncionario(props) {
 
     useEffect(()=>{
         buscarFuncionarios();
-    },[listaFuncionarios])
+    },[listaFuncionarios]);
+
+    const editarFuncionario = (funcionario) => {
+        setFuncionarioAEditar(funcionario);
+        setExibirTabela(false); 
+    };
 
     if (exibirTabela) {
         return (
@@ -31,10 +37,15 @@ export default function TelaCadastroFuncionario(props) {
                     <h1>Tela de Cadastro de Funcionários</h1>
                     <br/>
                     <h2>Lista de funcionários</h2>
-                    <TabelaFuncionarios listaFuncionarios={listaFuncionarios} setExibirTabela={setExibirTabela} />
+                    <TabelaFuncionarios
+                        listaFuncionarios={listaFuncionarios}
+                        setExibirTabela={setExibirTabela}
+                        editarFuncionario={editarFuncionario} 
+                        setFuncionarioAEditar={setFuncionarioAEditar}
+                    />
                 </Pagina>
             </div>
-        )
+        );
     }
     else {
         return (
@@ -42,14 +53,15 @@ export default function TelaCadastroFuncionario(props) {
                 <Pagina>
                     <h1>Tela de Cadastro de Funcionários</h1>
                     <br/>
-                    <h2>Formulário de cadastro de Funcionários</h2>
+                    <h2>Formulário de edição de Funcionários</h2>
                     <FormCadFuncionarios
                         setExibirTabela={setExibirTabela}
                         listaFuncionarios={listaFuncionarios}
                         setListaFuncionarios={setListaFuncionarios}
+                        funcionarioAEditar={funcionarioAEditar} 
                      />
                 </Pagina>
             </div>
-        )
+        );
     }
 }

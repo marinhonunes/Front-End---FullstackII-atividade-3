@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+// /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 
@@ -27,8 +27,9 @@ export default function TabelaFuncionarios(props) {
     });
   };
   
-  const editarFuncionario = (codigo) => {
-    console.log("Editar funcionário com código:", codigo);
+  const editarFuncionario = (funcionario) => {
+    props.setFuncionarioAEditar(funcionario); // Passar o funcionário para o estado funcionarioAEditar no componente FormCadFuncionarios
+    setExibirTabela(false); // Mudar para o modo de edição
   };
 
   return (
@@ -56,7 +57,7 @@ export default function TabelaFuncionarios(props) {
               <td>{new Date(funcionario.dataContratacao).toLocaleDateString()}</td>
               <td>{funcionario.departamento.nome}</td>
               <td>
-                <Button variant="primary" onClick={() => editarFuncionario(funcionario.codigo)}>
+                <Button variant="primary" onClick={() => editarFuncionario(funcionario)}>
                   Editar
                 </Button>{' '}
                 <Button variant="danger" onClick={() => deletarFuncionario(funcionario.codigo)}>
@@ -70,3 +71,4 @@ export default function TabelaFuncionarios(props) {
     </div>
   );
 }
+
